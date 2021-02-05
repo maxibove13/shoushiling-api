@@ -11,6 +11,7 @@ server.use(bodyParser.json());
 
 // Data
 const dataImport = require("./data.json");
+const { response } = require("express");
 const users = [
   {
     id: 1,
@@ -41,6 +42,11 @@ server.post("/login", (request, response) => {
       message: "Wrong credentials",
     });
   }
+});
+
+// Hello World
+server.get("/", (req, res) => {
+  response.status(200).send("Hello World");
 });
 
 // get all users
