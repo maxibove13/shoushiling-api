@@ -11,7 +11,6 @@ server.use(bodyParser.json());
 
 // Data
 const dataImport = require("./data.json");
-const { response } = require("express");
 const users = [
   {
     id: 1,
