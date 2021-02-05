@@ -4,12 +4,13 @@ const bodyParser = require("body-parser");
 
 // Server
 const server = express();
-const port = 5000;
+const port = 3000;
 
 // Midlewares usage
 server.use(bodyParser.json());
 
 // Data
+const dataImport = require("./data.json");
 const users = [
   {
     id: 1,
@@ -44,9 +45,10 @@ server.post("/login", (request, response) => {
 
 // get all users
 server.get("/users", (request, response) => {
-  response.status(200).json({
-    users,
-  });
+  //   response.status(200).json({
+  //     users,
+  //   });
+  response.status(200).send(dataImport);
 });
 
 server.get("/user/:id", (request, response) => {
