@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 
 // Server
 const server = express();
-const port = 3000;
+const port = process.env.PORT;
 
 // Midlewares usage
 server.use(bodyParser.json());
