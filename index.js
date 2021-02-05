@@ -22,7 +22,7 @@ const users = [
     id: 2,
     name: "Bel",
     email: "belenpagliachocho@gmail.com",
-    password: "fliapaglia",
+    password: "fliapaglia01",
   },
 ];
 
