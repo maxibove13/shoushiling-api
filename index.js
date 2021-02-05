@@ -45,7 +45,7 @@ server.post("/login", (request, response) => {
 
 // Hello World
 server.get("/", (req, res) => {
-  res.status(200).json({ message: "Hello World" });
+  res.status(200).json({ message: "Hello World again" });
 });
 
 // get all users
