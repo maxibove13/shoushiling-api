@@ -1,13 +1,21 @@
 // Dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+//const helmet = require("helmet");
 
 // Server
 const server = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
-// Midlewares usage
+// Midlewares for parsing of JSON
 server.use(bodyParser.json());
+
+// Middleware for using CORS
+server.use(cors());
+
+// Middlewares that sets various HTTP headers.
+//server.use(helmet());
 
 // Data
 const dataImport = require("./data.json");
@@ -45,7 +53,7 @@ server.post("/login", (request, response) => {
 
 // Hello World
 server.get("/", (req, res) => {
-  res.status(200).json({ message: "Hello World again" });
+  res.status(200).json({ message: "Hello World againn" });
 });
 
 // get all users
