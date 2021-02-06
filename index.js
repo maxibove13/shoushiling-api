@@ -2,11 +2,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const dotenv = require("dotenv");
 //const helmet = require("helmet");
 
 // Server
 const server = express();
-const port = process.env.PORT || 5000;
+
+// Load config
+dotenv.config({ path: "./config/config.env" });
+
+// Set port
+// PORT is for heroku & PORT_LOCAL for local deployment.
+const port = process.env.PORT || process.env.PORT_LOCAL;
 
 // Midlewares for parsing of JSON
 server.use(bodyParser.json());
