@@ -90,7 +90,7 @@ app.put("/updatePassword", verifyToken, updatePassword);
 app.put("/updateName", verifyToken, updateName);
 
 // Delete User
-app.delete("/deleteUser", deleteUser);
+app.delete("/deleteUser", verifyToken, deleteUser);
 
 // Listen conections only if connected or connecting to db.
 if (mongoose.connection.readyState) {
