@@ -1,5 +1,9 @@
+// Dependencies
 const bcrypt = require("bcrypt"); // hash the user's password
 const Joi = require("@hapi/joi"); // validate the user's fields.
+const jwt = require("jsonwebtoken");
+
+// Models
 const user = require("../../models/user");
 
 const register = (req, res) => {
@@ -36,6 +40,15 @@ const register = (req, res) => {
           const userWithoutPassword = user.toObject();
           // delete the password
           delete userWithoutPassword.password;
+
+          // Adding user token
+          userWithoutPassword.token = jwt.sign(
+            {
+              id: user._id,
+            },
+            process.env.JWT_KEY,
+            { expiresIn: "1h" }
+          );
 
           // respond the user
           res.json({

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-// In order to verify you have to send the token in the header with key: bearer & value: <token>
+// In order to verify you have to send the token in the header with key: Authorization & value: <token>
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
