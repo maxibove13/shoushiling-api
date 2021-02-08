@@ -2,35 +2,35 @@
 const express = require("express");
 const router = express.Router();
 
-// Controllers
-const register = require("../controllers/users/register");
+// Models
+const userModel = require("../models/user");
 
-// Hard coded data
-const dataImport = require("../data.json");
-
-// respond a list of users
+// respond the list of users from the db
 router.get("/", (req, res) => {
-  res.status(200).send(dataImport);
-});
-
-// request id in URL and respond corresponding user
-router.get("/:id", (req, res) => {
-  // Return in JSON format the user lists
-  const result = dataImport.find((user) => {
-    return user.id === parseInt(req.params.id);
+  userModel.find({}, (err, user) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ msg: "couln't make the query to the db" });
+    } else {
+      res.status(200).send(user);
+    }
   });
-  if (result) {
-    res.status(200).json({
-      result,
-    });
-  } else {
-    res.status(404).json({
-      message: "User not found",
-    });
-  }
 });
 
-// Register a user
-router.post("/", register);
+// request name in URL and respond corresponding user
+router.get("/:name", (req, res) => {
+  userModel.find({ name: req.params.name }, (err, user) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ msg: "couln't make the query to the db" });
+    } else {
+      if (user.length != 0) {
+        res.status(200).send(user);
+      } else {
+        res.status(404).json({ msg: "user with requested name not found" });
+      }
+    }
+  });
+});
 
 module.exports = router;
