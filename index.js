@@ -36,9 +36,9 @@ const verifyToken = require("./middlewares/verifyToken");
 const logger = require("./middlewares/logger");
 
 // Run morgan if in dev mode
-if (process.env.npm_lifecycle_event === "dev") {
-  app.use(morgan("dev"));
-}
+// if (process.env.npm_lifecycle_event === "dev") {
+// app.use(morgan("dev"));
+// }
 // Midleware for parsing of JSON, convert the body data to json
 app.use(express.json());
 
