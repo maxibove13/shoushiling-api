@@ -22,7 +22,22 @@ const updatePassword = (req, res) => {
         console.log(error);
         res.status(500).json({ msg: "Couldn't update password" });
       } else {
-        res.status(200).json({ msg: "password updated sucsessfully" });
+        // Get the actual user
+        user.findOne(query, (err, userUpdated) => {
+          // if I use find instead of findeOne it returns an array!
+          if (err) {
+            console.log(err);
+            res.status(500).json({ msg: "Couldn't find user" });
+          } else {
+            // Convert user to plain old js object
+            const userUpdatedWithoutPassword = userUpdated.toObject();
+            delete userUpdatedWithoutPassword.password;
+            res.status(200).json({
+              msg: "password updated sucsessfully",
+              userUpdatedWithoutPassword,
+            });
+          }
+        });
       }
     });
   } else {

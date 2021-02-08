@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt"); // hash the user's password
 const Joi = require("@hapi/joi"); // validate the user's fields.
-const users = require("../../models/user");
+const user = require("../../models/user");
 
 const register = (req, res) => {
   // Create joi schema
@@ -19,7 +19,7 @@ const register = (req, res) => {
     const passwordHash = bcrypt.hashSync(req.body.password, 2);
 
     // create the user with mongoose
-    users.create(
+    user.create(
       {
         name: req.body.name,
         email: req.body.email,
@@ -34,7 +34,6 @@ const register = (req, res) => {
         } else {
           // Convert user to plain old js object
           const userWithoutPassword = user.toObject();
-
           // delete the password
           delete userWithoutPassword.password;
 

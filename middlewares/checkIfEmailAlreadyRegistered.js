@@ -1,5 +1,5 @@
 // Model
-const user = require("../../../models/user");
+const user = require("../models/user");
 
 const checkIfEmailAlreadyRegistered = (req, res, next) => {
   // Returns true or false whether the document exists or not

@@ -19,7 +19,23 @@ const updateName = (req, res) => {
         console.log(err);
         res.status(500).json({ msg: "Couldn't update name" });
       } else {
-        res.status(200).json({ msg: "name updated sucsessfully" });
+        // Get the actual user
+        user.findOne(query, (err, userUpdated) => {
+          if (err) {
+            console.log(err);
+            res.status(500).json({ msg: "Couldn't find user" });
+          } else {
+            // Convert user to plain old js object
+            const userUpdatedWithoutPassword = userUpdated.toObject();
+            delete userUpdatedWithoutPassword.password;
+            res
+              .status(200)
+              .json({
+                msg: "name updated sucsessfully",
+                userUpdatedWithoutPassword,
+              });
+          }
+        });
       }
     });
   } else {
