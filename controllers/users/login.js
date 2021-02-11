@@ -6,7 +6,7 @@ const login = (req, res) => {
   const query = { email: req.body.email };
   user.findOne(query, (err, userFound) => {
     if (err) {
-      res.status(500).json({ msg: "Couln't make a query while logging" });
+      res.status(500).json({ msg: "Couln't make a query while signing in" });
     } else {
       if (userFound) {
         // Compare the req password hash with the one in the db.
@@ -27,12 +27,11 @@ const login = (req, res) => {
           );
           res.status(200).json({ userFound: userWithoutPassword });
         } else {
-          res.json({ msg: "User credential didn't match" });
-          res.status(401).end();
+          res.status(401).json({ msg: "User credential didn't match" });
+          // res.status(401).end();
         }
       } else {
-        res.json({ msg: "User not found" });
-        res.status(401).end();
+        res.status(401).json({ msg: "User not found" });
       }
     }
   });

@@ -29,7 +29,7 @@ const register = (req, res) => {
         email: req.body.email,
         password: passwordHash,
       },
-      (error, user) => {
+      (error, userFound) => {
         if (error) {
           console.log(error);
           res.status(500).json({
@@ -37,14 +37,14 @@ const register = (req, res) => {
           });
         } else {
           // Convert user to plain old js object
-          const userWithoutPassword = user.toObject();
+          const userWithoutPassword = userFound.toObject();
           // delete the password
           delete userWithoutPassword.password;
 
           // Adding user token
           userWithoutPassword.token = jwt.sign(
             {
-              id: user._id,
+              id: userFound._id,
             },
             process.env.JWT_KEY,
             { expiresIn: "1h" }
@@ -52,7 +52,7 @@ const register = (req, res) => {
 
           // respond the user
           res.json({
-            user: userWithoutPassword,
+            userFound: userWithoutPassword,
           });
         }
       }

@@ -8,7 +8,7 @@ const checkIfEmailAlreadyRegistered = (req, res, next) => {
       res.send(err);
     } else {
       if (result) {
-        res.status(400).json({ msg: "email already registered in our db." });
+        res.status(400).json({ msg: "Email ya registrado" });
       } else {
         // Email not registered, proceed
         next();

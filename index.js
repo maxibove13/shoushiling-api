@@ -61,6 +61,9 @@ if (process.env.npm_lifecycle_event === "dev") {
 // Use /users routes
 app.use("/users", require("./routes/users"));
 
+// Use /matches routes
+app.use("/matches", require("./routes/matches"));
+
 // connect to db
 connectDB();
 

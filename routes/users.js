@@ -19,13 +19,15 @@ router.get("/", (req, res) => {
 
 // request name in URL and respond corresponding user
 router.get("/:name", (req, res) => {
-  userModel.find({ name: req.params.name }, (err, user) => {
+  userModel.findOne({ name: req.params.name }, (err, user) => {
     if (err) {
       console.log(err);
       res.status(500).json({ msg: "couln't make the query to the db" });
     } else {
       if (user.length != 0) {
-        res.status(200).send(user);
+        const userWithoutPassword = user.toObject();
+        delete userWithoutPassword.password;
+        res.status(200).send(userWithoutPassword);
       } else {
         res.status(404).json({ msg: "user with requested name not found" });
       }
