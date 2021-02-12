@@ -5,17 +5,13 @@ const router = express.Router();
 // Models
 const userModel = require("../models/user");
 
+// Controllers
+const getAllUsers = require("../controllers/users/getAllUsers");
+
+// Middlewares
+
 // respond the list of users from the db
-router.get("/", (req, res) => {
-  userModel.find({}, (err, user) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({ msg: "couln't make the query to the db" });
-    } else {
-      res.status(200).send(user);
-    }
-  });
-});
+router.get("/", getAllUsers);
 
 // request name in URL and respond corresponding user
 router.get("/:name", (req, res) => {

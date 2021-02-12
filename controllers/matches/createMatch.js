@@ -12,14 +12,14 @@ const createMatch = (req, res) => {
       .required(),
 
     player_1: Joi.object({
-      idUser: Joi.string().required(),
+      id_user: Joi.string().required(),
       points: Joi.number().max(2).integer().required(),
-    }),
+    }).required(),
 
     player_2: Joi.object({
-      idUser: Joi.string().required(),
+      id_user: Joi.string().required(),
       points: Joi.number().integer().valid(0, 1, 2).required(),
-    }),
+    }).required(),
 
     games: Joi.array()
       .items(
@@ -32,41 +32,38 @@ const createMatch = (req, res) => {
       )
       .required(),
   });
+  // Define the match schema to request
+  const matchSchema = {
+    state: "waitingApproval",
 
-  // Validate the body request:
-  const validationResult = schema.validate(req.body);
+    player_1: {
+      id_user: req.body.player_1.id_user,
+      points: 0,
+    },
+
+    player_2: {
+      id_user: req.body.player_2.id_user,
+      points: 0,
+    },
+
+    games: [],
+  };
+  // Validate the schema
+  const validationResult = schema.validate(matchSchema);
   console.log("entering createMatch");
 
   if (!validationResult.error) {
     // Create the match
-    match.create(
-      {
-        state: req.body.state,
-
-        player_1: req.body.player_1,
-        idUser: req.body.player_1.idUser,
-        points: req.body.player_1.points,
-
-        player_2: req.body.player_2,
-        idUser: req.body.player_2.idUser,
-        points: req.body.player_2.points,
-
-        games: req.body.games,
-        gameNumber: req.body.games.gameNumber,
-        movePlayer_1: req.body.games.movePlayer_1,
-        movePlayer_2: req.body.games.movePlayer_2,
-        wonBy: req.body.games.wonBy,
-      },
-      (err, match) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({ msg: "Couldn't create match" });
-        } else {
-          // respond the match
-          res.status(200).send(match);
-        }
+    match.create(matchSchema, (err, match) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ msg: "Couldn't create match" });
+      } else {
+        // respond the match
+        console.log("match Created succesfully");
+        res.status(200).send(match);
       }
-    );
+    });
   } else {
     res.status(400).json({
       msg: validationResult.error,

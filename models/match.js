@@ -9,7 +9,7 @@ const matches = model(
       trim: true,
     },
     player_1: {
-      idUser: {
+      id_user: {
         type: String,
         require: true,
         trim: true,
@@ -20,7 +20,7 @@ const matches = model(
       },
     },
     player_2: {
-      idUser: {
+      id_user: {
         type: String,
         require: true,
         trim: true,

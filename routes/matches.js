@@ -1,8 +1,6 @@
 // Dependencies
 const express = require("express");
 const router = express.Router();
-const Joi = require("@hapi/joi");
-const mongoose = require("mongoose");
 
 // Models
 const match = require("../models/match");
@@ -10,10 +8,12 @@ const match = require("../models/match");
 // Controllers
 const createMatch = require("../controllers/matches/createMatch");
 const queryDB = require("../controllers/matches/queryDB");
+const updateMatch = require("../controllers/matches/updateMatch");
 
 // Local middlewares
 const verifyToken = require("../middlewares/verifyToken");
 const checkIfPlayersHaveAnotherMatch = require("../middlewares/checkIfPlayersHaveAnotherMatch");
+const checkUsersAreNotTheSame = require("../middlewares/checkUsersAreNotTheSame");
 
 // Show all matches
 router.get("/", (req, res) => {
@@ -30,14 +30,19 @@ router.get("/", (req, res) => {
 });
 
 // Create a new match in the db
-router.post("/", verifyToken, checkIfPlayersHaveAnotherMatch, createMatch);
+router.post(
+  "/",
+  verifyToken,
+  checkUsersAreNotTheSame,
+  checkIfPlayersHaveAnotherMatch,
+  createMatch
+);
 
 // Update the match games
+router.put("/", verifyToken, updateMatch);
 
 // Create a new game in a requested match
 
 router.post("/queries", queryDB);
-
-// VerifyToken -> checkIfPlayersHaveAnotherMatch
 
 module.exports = router;

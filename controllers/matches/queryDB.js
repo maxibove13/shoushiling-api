@@ -5,12 +5,12 @@ const queryDB = (req, res) => {
   query = {
     $or: [
       {
-        "player_1.idUser": req.body.id_User,
-        "player_2.idUser": req.body.id_Oponent,
+        "player_1.id_user": req.body.player_1.id_user,
+        "player_2.id_user": req.body.player_2.id_user,
       },
       {
-        "player_2.idUser": req.body.id_User,
-        "player_1.idUser": req.body.id_Oponent,
+        "player_2.id_user": req.body.player_1.id_user,
+        "player_1.id_user": req.body.player_2.id_user,
       },
     ],
   };
