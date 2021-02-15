@@ -2,15 +2,28 @@
 const match = require("../models/match");
 
 const checkIfPlayersHaveAnotherMatch = (req, res, next) => {
+  // All the matches that contains player_1 and player_2 ids, $and the state is "waitingApproval" $or "playing".
   const query = {
-    $or: [
+    $and: [
       {
-        "player_1.id_user": req.body.player_1.id_user,
-        "player_2.id_user": req.body.player_2.id_user,
-      },
-      {
-        "player_2.id_user": req.body.player_1.id_user,
-        "player_1.id_user": req.body.player_2.id_user,
+        $or: [
+          {
+            "player_1.id_user": req.body.player_1.id_user,
+            "player_2.id_user": req.body.player_2.id_user,
+          },
+          {
+            "player_2.id_user": req.body.player_1.id_user,
+            "player_1.id_user": req.body.player_2.id_user,
+          },
+        ],
+        $or: [
+          {
+            state: "waitingApproval",
+          },
+          {
+            state: "playing",
+          },
+        ],
       },
     ],
   };
@@ -22,9 +35,11 @@ const checkIfPlayersHaveAnotherMatch = (req, res, next) => {
       if (result) {
         res.status(400).json({
           msg: "Ya tienes una partida en curso con ese usuario",
+          result,
         });
       } else {
         // Users don't have another match between them, proceed
+        console.log("WELL DONE");
         next();
       }
     }

@@ -7,8 +7,10 @@ const userModel = require("../models/user");
 
 // Controllers
 const getAllUsers = require("../controllers/users/getAllUsers");
+const userNameById = require("../controllers/users/userNameById");
 
 // Middlewares
+const verifyToken = require("../middlewares/verifyToken");
 
 // respond the list of users from the db
 router.get("/", getAllUsers);
@@ -30,5 +32,8 @@ router.get("/:name", (req, res) => {
     }
   });
 });
+
+// Get user name by requested id
+router.post("/nameById", verifyToken, userNameById);
 
 module.exports = router;
