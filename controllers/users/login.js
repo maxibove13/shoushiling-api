@@ -23,7 +23,7 @@ const login = (req, res) => {
               id: userFound._id,
             },
             process.env.JWT_KEY,
-            { expiresIn: "1h" }
+            { expiresIn: "7d" }
           );
           res.status(200).json({ userFound: userWithoutPassword });
         } else {

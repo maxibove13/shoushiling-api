@@ -8,27 +8,51 @@ const checkIfPlayersHaveAnotherMatch = (req, res, next) => {
       {
         $or: [
           {
-            "player_1.id_user": req.body.player_1.id_user,
-            "player_2.id_user": req.body.player_2.id_user,
+            $and: [
+              {
+                "player_1.id_user": req.body.player_1.id_user,
+              },
+              {
+                "player_2.id_user": req.body.player_2.id_user,
+              },
+              {
+                $or: [
+                  {
+                    state: "waitingApproval",
+                  },
+                  {
+                    state: "playing",
+                  },
+                ],
+              },
+            ],
           },
           {
-            "player_2.id_user": req.body.player_1.id_user,
-            "player_1.id_user": req.body.player_2.id_user,
-          },
-        ],
-        $or: [
-          {
-            state: "waitingApproval",
-          },
-          {
-            state: "playing",
+            $and: [
+              {
+                "player_1.id_user": req.body.player_1.id_user,
+              },
+              {
+                "player_2.id_user": req.body.player_2.id_user,
+              },
+              {
+                $or: [
+                  {
+                    state: "waitingApproval",
+                  },
+                  {
+                    state: "playing",
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
     ],
   };
   // Returns true or false whether the document exists or not
-  match.exists(query, (err, result) => {
+  match.findOne(query, (err, result) => {
     if (err) {
       res.send(err);
     } else {
