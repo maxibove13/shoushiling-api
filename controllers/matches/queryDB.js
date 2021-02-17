@@ -2,15 +2,51 @@
 const match = require("../../models/match");
 
 const queryDB = (req, res) => {
-  query = {
-    $or: [
+  const query = {
+    $and: [
       {
-        "player_1.id_user": req.body.player_1.id_user,
-        "player_2.id_user": req.body.player_2.id_user,
-      },
-      {
-        "player_2.id_user": req.body.player_1.id_user,
-        "player_1.id_user": req.body.player_2.id_user,
+        $or: [
+          {
+            $and: [
+              {
+                "player_1.id_user": req.body.player_1.id_user,
+              },
+              {
+                "player_2.id_user": req.body.player_2.id_user,
+              },
+              {
+                $or: [
+                  {
+                    state: "waitingApproval",
+                  },
+                  {
+                    state: "playing",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            $and: [
+              {
+                "player_1.id_user": req.body.player_2.id_user,
+              },
+              {
+                "player_2.id_user": req.body.player_1.id_user,
+              },
+              {
+                $or: [
+                  {
+                    state: "waitingApproval",
+                  },
+                  {
+                    state: "playing",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     ],
   };
@@ -23,9 +59,7 @@ const queryDB = (req, res) => {
       if (match.length > 0) {
         res.send(match);
       } else {
-        res
-          .status(500)
-          .json({ msg: "No se encontró la partida asociada con la consulta" });
+        res.status(500).json({ msg: "No se encontró la partida asociada con la consulta" });
       }
     }
   });

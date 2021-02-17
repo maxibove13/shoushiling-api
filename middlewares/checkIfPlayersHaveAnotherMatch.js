@@ -30,10 +30,10 @@ const checkIfPlayersHaveAnotherMatch = (req, res, next) => {
           {
             $and: [
               {
-                "player_1.id_user": req.body.player_1.id_user,
+                "player_1.id_user": req.body.player_2.id_user,
               },
               {
-                "player_2.id_user": req.body.player_2.id_user,
+                "player_2.id_user": req.body.player_1.id_user,
               },
               {
                 $or: [
@@ -52,7 +52,7 @@ const checkIfPlayersHaveAnotherMatch = (req, res, next) => {
     ],
   };
   // Returns true or false whether the document exists or not
-  match.findOne(query, (err, result) => {
+  match.exists(query, (err, result) => {
     if (err) {
       res.send(err);
     } else {
@@ -63,6 +63,7 @@ const checkIfPlayersHaveAnotherMatch = (req, res, next) => {
         });
       } else {
         // Users don't have another match between them, proceed
+        res.json("checkIf", result);
         console.log("WELL DONE");
         next();
       }
