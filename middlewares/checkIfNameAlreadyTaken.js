@@ -8,7 +8,7 @@ const checkIfNameAlreadyTaken = (req, res, next) => {
       res.send(err);
     } else {
       if (result) {
-        res.status(400).json({ msg: "Nombre ya existente" });
+        res.status(400).json({ msg: "Alias ya existente" });
       } else {
         // Name not taken, proceed
         next();
