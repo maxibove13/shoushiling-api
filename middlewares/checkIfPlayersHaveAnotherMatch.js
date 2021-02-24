@@ -63,7 +63,6 @@ const checkIfPlayersHaveAnotherMatch = (req, res, next) => {
         });
       } else {
         // Users don't have another match between them, proceed
-        console.log("WELL DONE");
         next();
       }
     }
